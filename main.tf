@@ -32,7 +32,7 @@ resource "aws_subnet" "public_2a" {
 resource "aws_subnet" "public_2b" {
   vpc_id                  = aws_vpc.demo.id
   cidr_block              = var.subnet_cidr_2b
-  availability_zone       = "eu-west-2b"
+  availability_zone       = "az - of - choice"
   map_public_ip_on_launch = true
 
   tags = {
@@ -69,13 +69,13 @@ resource "tls_private_key" "example" {
 }
 
 resource "aws_key_pair" "alb_demo_keys" {
-  key_name   = "alb-demo-keys"
+  key_name   = "key-pair"
   public_key = tls_private_key.example.public_key_openssh
 }
 
 resource "local_sensitive_file" "private_key" {
   content         = tls_private_key.example.private_key_pem
-  filename        = "${path.module}/alb-demo-keys.pem"
+  filename        = "${path.module}/key-pair.pem"
   file_permission = "0600"
 }
 
@@ -127,7 +127,7 @@ resource "aws_security_group" "public" {
   ingress {
     description = "http access"
     from_port   = 80
-    to_port     = 80            You dont need to include access over http directly to the ec2 as
+    to_port     = 80              You dont need to include access over http directly to the ec2 as
     protocol    = "tcp"           they will be accessed through the ALB DNS for a more secure setup.
     cidr_blocks = [var.all_traffic]
   }*/
