@@ -25,7 +25,7 @@ variable "subnet_cidr_2b" {
 variable "ami" {
   description = "ami type ubuntu"
   type        = string
-  default     = "ami-0224ce6f9504665ee"
+  default     = "default ami of ubuntu"
 }
 
 variable "instance_type" {
