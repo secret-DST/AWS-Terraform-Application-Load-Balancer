@@ -2,7 +2,8 @@
 ## Architectural Diagram
 <img width="846" height="581" alt="Screenshot 2026-08-18 192113" src="https://github.com/user-attachments/assets/c6ea4cd2-5ba2-4995-ad76-7df737f2e9e3" />
 
-NOTE: The EC2 instances are deployed in different AZs 
+NOTE: The EC2 instances are deployed in 2 different subnets and AZs for fault tolerance and because utilising the AWS ALB requires this.
+(deploying in at least 2 subnet in different AZs)
 
 ## Overview
 This project uses Terraform to provision an AWS infrastructure with an Application Load Balancer (ALB) and EC2 instances running Ubuntu.
@@ -43,7 +44,8 @@ The ALB distributes incoming HTTP traffic across instances to improve availabili
   (The configuration for this process is in backend.tf)
 
 ## User data script
-- The bash script in "user_data.sh" is a simple but fault-proof configuration for the ec2 instances we deploy in 
+- The bash script in "user_data.sh" is a simple but fault-proof configuration for the ec2 instances we deploy in across the subnets.
+  It creates a simple Apache 2 web server, that displays the hostname of each EC2 instance. (So we can visible see the ALB distributing traffic)
 
 ## Deployment
 - **terraform init** – initialises the directory
