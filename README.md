@@ -11,6 +11,7 @@ The ALB distributes incoming HTTP traffic across instances to improve availabili
 ## AWS Services Used
 - **VPC** – Provides network isolation.
 - **EC2** – Hosts the web application.
+- **S3** – remote backend to store terraform state.
 - **Application Load Balancer** – Distributes incoming traffic.
 - **Target Group** – Registers EC2 instances and performs health checks.
 - **Security Groups** – Controls inbound and outbound traffic.
@@ -21,14 +22,25 @@ The ALB distributes incoming HTTP traffic across instances to improve availabili
 ```text
 .
 ├── backend.tf
-├── main.tf
 ├── provider.tf
+├── main.tf
+├── target_group.tf
 ├── var.tf
 ├── output.tf
-├── target_group.tf
 ├── user_data.sh
 └── .gitignore
 ```
+
+## Terraform state store
+- Since we are working with AWS, we will leverage S3 to store our terraform state file. This is because storing our terraform state file
+  remotely is much more secure than keeping it locally. Human error, accidental deletion are also risks associated with storing it locally.
+  In addition, storing it remotely will enable seamless collaboration as any other entity working on the same terraform project can
+  access it - with the right controls and access.
+
+- Previously, DynamoDB was utilised alongside S3 to provide state locking, to prevent concurrent operations, which could result in corrupting
+  the state file. However, terraform has made this process more convenient by providing state locking through "use_lockfile = true" configuration.
+  Therefore, we will only be utilising S3 with the built in configuration, rather than the deprecated DynamoDB method.
+  (The configuration for this process is in backend.tf)
 
 ## Deployment
 - **terraform init** – initialises the directory
