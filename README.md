@@ -42,6 +42,9 @@ The ALB distributes incoming HTTP traffic across instances to improve availabili
   Therefore, we will only be utilising S3 with the built in configuration, rather than the deprecated DynamoDB method.
   (The configuration for this process is in backend.tf)
 
+## User data script
+- The bash script in "user_data.sh" is a simple but fault-proof configuration for the ec2 instances we deploy in 
+
 ## Deployment
 - **terraform init** – initialises the directory
 - **terraform fmt** - formats the code to make it more presentable/readable
